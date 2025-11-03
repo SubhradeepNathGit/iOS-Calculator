@@ -124,4 +124,20 @@ button:active {
   padding-left: 32px;
 }
 
+footer {
+  margin-top: 12px;
+  color: #888;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+footer a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+footer a:hover {
+  opacity: 0.8;
+}
+
 
