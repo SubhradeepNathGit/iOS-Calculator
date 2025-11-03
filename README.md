@@ -1,85 +1,128 @@
-#  iOS Calculator
+# iOS Calculator Clone
 
-A **fully responsive, Apple-inspired calculator web app** built using **HTML, CSS, and JavaScript**.
-It mimics the smooth UI/UX of iOS calculators with real-time expression updates, keyboard support, and operator highlighting.
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Built%20with-HTML%20%7C%20CSS%20%7C%20JS-blue" alt="Built with HTML | CSS | JS">
-  <img src="https://img.shields.io/badge/License-MIT-green" alt="License: MIT">
-  <a href="https://your-live-demo-link.com" target="_blank"><img src="https://img.shields.io/badge/Live%20Demo-%E2%9C%85-brightgreen" alt="Live Demo"></a>
-</p>
+## 🔗 [Try Now](https://i-os-calculator-eight.vercel.app/)
 
-> 🎯 **Live Demo:** [Click here to try it out](https://your-live-demo-link.com)
+![Calculator Preview](./screenshot.png)
 
----
+> A pixel-perfect recreation of the iOS calculator with full functionality and keyboard support
 
-## 🚀 Features
+## ✨ Features
 
-✅ **Modern UI** – Dark theme with smooth transitions and rounded buttons
-✅ **Real-time Expression Display** – Shows the current operation and result
-✅ **Functional Operators** – Supports addition, subtraction, multiplication, and division
-✅ **Keyboard Support** – Type numbers and operators directly from your keyboard
-✅ **AC / C Toggle** – Smart clear button behavior
-✅ **Percentage & Sign Toggle** – Works contextually like iOS calculator
-✅ **Error Handling** – Handles invalid operations (e.g., divide by zero) gracefully
-✅ **Responsive Design** – Looks great on both desktop and mobile devices
+- 🎨 **Authentic iOS Design** - Matches the look and feel of the native iOS calculator
+- ⌨️ **Keyboard Support** - Full keyboard input for faster calculations
+- 📱 **Responsive Design** - Works seamlessly on all screen sizes
+- 🔢 **Complete Functionality** - All standard calculator operations
+- 🎯 **Smart Display** - Dynamic font sizing for long numbers
+- ⚡ **Error Handling** - Graceful handling of division by zero and overflow
+- 🔄 **Context-Aware Percentage** - iOS-style percentage calculations
+- 🌙 **Dark Theme** - Beautiful dark interface matching iOS aesthetic
 
+## 🚀 Quick Start
 
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/SubhradeepNathGit/ios-calculator.git
+   ```
 
-## 🖼️ Preview
+2. **Navigate to project directory**
+   ```bash
+   cd ios-calculator
+   ```
 
-<p align="center">
-  <img src="./preview/calculator-preview.png" alt="Calculator Preview" width="80%">
-</p>
+3. **Open in browser**
+   ```bash
+   open index.html
+   ```
+   Or simply drag `index.html` into your browser.
 
+## 📁 Project Structure
 
+```
+ios-calculator/
+│
+├── index.html          # Main HTML structure
+├── style.css           # iOS-inspired styling
+├── script.js           # Calculator logic and functionality
+└── README.md          # Project documentation
+```
 
-## 🧩 Tech Stack
+## 🎮 Usage
 
-- **HTML5** – For structure
-- **CSS3** – For styling and layout (grid-based button layout)
-- **Vanilla JavaScript (ES6)** – For calculator logic and event handling
+### Mouse/Touch Controls
+- Click number buttons to input digits
+- Click operator buttons (+, −, ×, ÷) to perform operations
+- Click `=` to calculate result
+- Click `AC/C` to clear (AC clears all, C clears current entry)
+- Click `+/−` to toggle sign
+- Click `%` for percentage calculations
 
+### Keyboard Controls
+- **Numbers**: `0-9`
+- **Decimal**: `.`
+- **Operators**: `+`, `-`, `*`, `/`
+- **Calculate**: `Enter` or `=`
+- **Clear**: `Escape` or `C`
+- **Backspace**: `Backspace`
+- **Percentage**: `%`
 
+## 🔧 Technical Details
 
-## ⚙️ How It Works
+### Key Functions
 
-- Click buttons or use your **keyboard** to input numbers and operations.
-- Press `=` or `Enter` to calculate the result.
-- Press `AC` to reset everything or `C` to clear the current input.
-- Use `%` for percentage and `+/-` to toggle sign.
-- The current operation appears above the main display for better context.
+- **Input Handling**: Limits input to 9 digits (like iOS)
+- **Chain Calculations**: Supports continuous operations without pressing equals
+- **Dynamic Display**: Auto-adjusts font size based on number length
+- **Scientific Notation**: Automatically formats very large/small numbers
+- **Error States**: Visual feedback for invalid operations
 
+### Browser Compatibility
 
+- ✅ Chrome (latest)
+- ✅ Firefox (latest)
+- ✅ Safari (latest)
+- ✅ Edge (latest)
 
-## 💡 Keyboard Shortcuts
+## 🎨 Customization
 
-| Key | Function |
-|-----|-----------|
-| 0–9 | Enter digits |
-| . | Decimal point |
-| +, -, *, / | Operators |
-| Enter or = | Calculate result |
-| Backspace | Delete last digit |
-| Escape or C | Clear |
-| % | Percentage |
+You can easily customize the calculator by modifying the CSS variables:
 
----
+```css
+/* Colors */
+--number-bg: #333;
+--operator-bg: #ff9f0a;
+--function-bg: #a5a5a5;
+--text-color: #fff;
+```
 
-## 🧠 Code Overview
+## 🤝 Contributing
 
-- **Display Section:** Shows expression and result dynamically.
-- **Event Listeners:** Handle button clicks and keyboard inputs.
-- **Smart Operator Highlighting:** Active operators are visually emphasized.
-- **Formatting Function:** Ensures numbers fit neatly (handles large/small values in scientific notation).
+Contributions are welcome! Please feel free to submit a Pull Request.
 
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
+## 📝 License
 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-📜 License
-This project is licensed under the MIT License — feel free to use and modify it.
+## 👨‍💻 Developer
 
-⭐ If you like this project, give it a star on GitHub!
+**Subhradeep Nath**
 
+- GitHub: [@SubhradeepNathGit](https://github.com/SubhradeepNathGit)
+- LinkedIn: [@Subhradeep-nath-dev](https://www.linkedin.com/in/subhradeep-nath-dev)
 
-Let me know if you would like any other sections or details updated!
+## 🙏 Acknowledgments
+
+- Design inspired by Apple's iOS Calculator
+- Built with vanilla JavaScript (no frameworks!)
+- Icons and fonts from system defaults
+
