@@ -18,7 +18,7 @@
 
 - 🎨 **Authentic iOS Design** - Matches the look and feel of the native iOS calculator
 - ⌨️ **Keyboard Support** - Full keyboard input for faster calculations
-- 📱 **Responsive Design** - Works seamlessly on all screen sizes
+- 📱 **Responsive Design** - Works seamlessly on all screen sizes including mobile, tablet and PC
 - 🔢 **Complete Functionality** - All standard calculator operations
 - 🎯 **Smart Display** - Dynamic font sizing for long numbers
 - ⚡ **Error Handling** - Graceful handling of division by zero and overflow
