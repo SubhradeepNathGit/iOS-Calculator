@@ -53,14 +53,23 @@ body {
   color: #fff;
   font-size: 4rem;
   font-weight: 300;
-  overflow-x: auto;
+  overflow: hidden;
   white-space: nowrap;
   width: 100%;
   text-align: right;
+  /* Prevent layout shift during number changes */
+  min-height: 4.5rem;
+  /* Dynamic font sizing for long numbers */
+  transition: font-size 0.1s ease;
 }
 
 #result::-webkit-scrollbar {
   display: none;
+}
+
+/* Auto-scroll to show the end of long numbers */
+#result:focus {
+  outline: none;
 }
 
 .buttons {
@@ -82,10 +91,15 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  -webkit-tap-highlight-color: transparent;
 }
 
 button:active {
   opacity: 0.5;
+}
+
+button:hover {
+  opacity: 0.9;
 }
 
 .number {
@@ -128,10 +142,11 @@ footer {
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 0px;
+  bottom: 10px;
   color: #888;
   font-size: 0.9rem;
   text-align: center;
+  padding: 10px;
 }
 
 footer a {
@@ -143,3 +158,19 @@ footer a:hover {
   opacity: 0.8;
 }
 
+/* Responsive design for smaller screens */
+@media (max-width: 400px) {
+  .calculator {
+    width: 100%;
+    max-width: 340px;
+  }
+  
+  #result {
+    font-size: 3.5rem;
+  }
+}
+
+/* Error state styling */
+#result.error {
+  color: #ff4444;
+}
