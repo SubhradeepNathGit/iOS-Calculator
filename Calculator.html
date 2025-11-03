@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculator</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  
+  .calculator {
+    background: #000;
+    padding: 20px;
+    width: 340px;
+  }
+  
+  #display {
+    width: 100%;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding: 20px 15px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+  }
+  
+  #expression {
+    color: #888;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    min-height: 1.8rem;
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 100%;
+    text-align: right;
+  }
+  
+  #expression::-webkit-scrollbar {
+    display: none;
+  }
+  
+  #result {
+    color: #fff;
+    font-size: 4rem;
+    font-weight: 300;
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 100%;
+    text-align: right;
+  }
+  
+  #result::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  
+  button {
+    padding: 0;
+    font-size: 1.8rem;
+    font-weight: 400;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    outline: none;
+    transition: opacity 0.15s;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  button:active {
+    opacity: 0.5;
+  }
+  
+  .number {
+    background: #333;
+    color: #fff;
+  }
+  
+  .operator {
+    background: #ff9f0a;
+    color: #fff;
+    font-size: 2.2rem;
+  }
+  
+  .operator.active {
+    background: #fff;
+    color: #ff9f0a;
+  }
+  
+  .function {
+    background: #a5a5a5;
+    color: #000;
+    font-weight: 500;
+  }
+  
+  .equals {
+    background: #ff9f0a;
+    color: #fff;
+    grid-column: span 1;
+    font-size: 2.2rem;
+  }
+  
+  .zero {
+    grid-column: span 2;
+    border-radius: 36px;
+    justify-content: flex-start;
+    padding-left: 32px;
+  }
+</style>
+</head>
+<body>
+
+<div class="calculator">
+  <div id="display">
+    <div id="expression"></div>
+    <div id="result">0</div>
+  </div>
+  <div class="buttons">
+    <button class="function" id="clear">AC</button>
+    <button class="function" data-action="sign">+/−</button>
+    <button class="function" data-action="percent">%</button>
+    <button class="operator" data-action="/">÷</button>
+
+    <button class="number" data-number="7">7</button>
+    <button class="number" data-number="8">8</button>
+    <button class="number" data-number="9">9</button>
+    <button class="operator" data-action="*">×</button>
+
+    <button class="number" data-number="4">4</button>
+    <button class="number" data-number="5">5</button>
+    <button class="number" data-number="6">6</button>
+    <button class="operator" data-action="-">−</button>
+
+    <button class="number" data-number="1">1</button>
+    <button class="number" data-number="2">2</button>
+    <button class="number" data-number="3">3</button>
+    <button class="operator" data-action="+">+</button>
+
+    <button class="number zero" data-number="0">0</button>
+    <button class="number" data-number=".">.</button>
+    <button class="equals" data-action="=">=</button>
+  </div>
+</div>
+
+<script>
+(() => {
+  const expressionDisplay = document.getElementById('expression');
+  const resultDisplay = document.getElementById('result');
+  const clearBtn = document.getElementById('clear');
+  
+  let currentValue = '0';
+  let previousValue = null;
+  let operator = null;
+  let waitingForOperand = false;
+  let lastAction = null;
+
+  const formatNumber = num => {
+    if (num === 'Error') return num;
+    const n = parseFloat(num);
+    if (isNaN(n)) return '0';
+    
+    // Handle scientific notation for very large or small numbers
+    const str = n.toString();
+    if (str.length > 9) {
+      if (Math.abs(n) < 1e-6 || Math.abs(n) > 1e9) {
+        return n.toExponential(5);
+      }
+      return parseFloat(n.toPrecision(9)).toString();
+    }
+    return str;
+  };
+
+  const updateDisplay = () => {
+    resultDisplay.textContent = formatNumber(currentValue);
+    
+    // Show expression
+    if (previousValue !== null && operator) {
+      const opSymbol = {'+': '+', '-': '−', '*': '×', '/': '÷'}[operator] || operator;
+      expressionDisplay.textContent = `${formatNumber(previousValue)} ${opSymbol}`;
+    } else {
+      expressionDisplay.textContent = '';
+    }
+    
+    // Update clear button - AC when starting fresh, C when there's input
+    clearBtn.textContent = (currentValue === '0' && previousValue === null) ? 'AC' : 'C';
+  };
+
+  const clearAll = () => {
+    currentValue = '0';
+    previousValue = null;
+    operator = null;
+    waitingForOperand = false;
+    document.querySelectorAll('.operator').forEach(btn => btn.classList.remove('active'));
+    updateDisplay();
+  };
+
+  const inputDigit = digit => {
+    if (waitingForOperand) {
+      currentValue = String(digit);
+      waitingForOperand = false;
+    } else {
+      if (currentValue === '0') {
+        currentValue = String(digit);
+      } else {
+        if (currentValue.length < 9) {
+          currentValue += String(digit);
+        }
+      }
+    }
+    lastAction = 'digit';
+    updateDisplay();
+  };
+
+  const inputDot = () => {
+    if (waitingForOperand) {
+      currentValue = '0.';
+      waitingForOperand = false;
+    } else if (currentValue.indexOf('.') === -1) {
+      currentValue += '.';
+    }
+    lastAction = 'digit';
+    updateDisplay();
+  };
+
+  const performOperation = nextOp => {
+    const inputValue = parseFloat(currentValue);
+
+    if (previousValue === null) {
+      previousValue = inputValue;
+    } else if (operator) {
+      const result = calculate(previousValue, inputValue, operator);
+      currentValue = String(result);
+      previousValue = result;
+    }
+
+    waitingForOperand = true;
+    operator = nextOp;
+    lastAction = 'operator';
+    
+    // Highlight active operator
+    document.querySelectorAll('.operator').forEach(btn => btn.classList.remove('active'));
+    if (nextOp !== '=') {
+      const activeBtn = document.querySelector(`[data-action="${nextOp}"]`);
+      if (activeBtn) activeBtn.classList.add('active');
+    }
+    
+    updateDisplay();
+  };
+
+  const calculate = (first, second, op) => {
+    let result;
+    switch (op) {
+      case '+': result = first + second; break;
+      case '-': result = first - second; break;
+      case '*': result = first * second; break;
+      case '/': 
+        if (second === 0) return 'Error';
+        result = first / second; 
+        break;
+      default: return second;
+    }
+    
+    if (!isFinite(result)) return 'Error';
+    return result;
+  };
+
+  const computeEquals = () => {
+    const inputValue = parseFloat(currentValue);
+    
+    if (operator && previousValue !== null) {
+      currentValue = String(calculate(previousValue, inputValue, operator));
+      expressionDisplay.textContent = '';
+      previousValue = null;
+      operator = null;
+      waitingForOperand = true;
+      
+      document.querySelectorAll('.operator').forEach(btn => btn.classList.remove('active'));
+    }
+    
+    lastAction = 'equals';
+    updateDisplay();
+  };
+
+  const toggleSign = () => {
+    currentValue = String(parseFloat(currentValue) * -1);
+    updateDisplay();
+  };
+
+  const percent = () => {
+    const value = parseFloat(currentValue);
+    if (previousValue !== null && operator) {
+      // Context-aware percentage (like iOS calculator)
+      if (operator === '+' || operator === '-') {
+        currentValue = String((previousValue * value) / 100);
+      } else {
+        currentValue = String(value / 100);
+      }
+    } else {
+      currentValue = String(value / 100);
+    }
+    updateDisplay();
+  };
+
+  // Event listeners for number buttons
+  document.querySelectorAll('.number').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const num = e.target.dataset.number;
+      if (num === '.') {
+        inputDot();
+      } else {
+        inputDigit(num);
+      }
+    });
+  });
+
+  // Event listeners for operator buttons
+  document.querySelectorAll('.operator').forEach(btn => {
+    btn.addEventListener('click', e => {
+      performOperation(e.target.dataset.action);
+    });
+  });
+
+  // Event listeners for special buttons
+  document.querySelector('.equals').addEventListener('click', computeEquals);
+  clearBtn.addEventListener('click', clearAll);
+  document.querySelector('[data-action="sign"]').addEventListener('click', toggleSign);
+  document.querySelector('[data-action="percent"]').addEventListener('click', percent);
+
+  // Keyboard support
+  window.addEventListener('keydown', e => {
+    if ('0123456789'.includes(e.key)) {
+      inputDigit(e.key);
+    }
+    if (e.key === '.') {
+      inputDot();
+    }
+    if ('+-*/'.includes(e.key)) {
+      e.preventDefault();
+      performOperation(e.key);
+    }
+    if (e.key === 'Enter' || e.key === '=') {
+      e.preventDefault();
+      computeEquals();
+    }
+    if (e.key === 'Backspace') {
+      if (currentValue.length > 1 && currentValue !== '0') {
+        currentValue = currentValue.slice(0, -1);
+      } else {
+        currentValue = '0';
+      }
+      updateDisplay();
+    }
+    if (e.key === 'Escape' || e.key.toLowerCase() === 'c') {
+      clearAll();
+    }
+    if (e.key === '%') {
+      percent();
+    }
+  });
+
+  // Initialize display
+  updateDisplay();
+})();
+</script>
+
+</body>
+</html>
