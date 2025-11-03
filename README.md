@@ -7,7 +7,10 @@
 
 ## 🔗 [Try Now](https://i-os-calculator-eight.vercel.app/)
 
-![Calculator Preview](./Screenshot%202025-11-04%20021110.png)
+<p align="center">
+  <img src="./Screenshot%202025-11-04%20021110.png" alt="Calculator Preview" width="400">
+</p>
+
 
 > A pixel-perfect recreation of the iOS calculator with full functionality and keyboard support
 
